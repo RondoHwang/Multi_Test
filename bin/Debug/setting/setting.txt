@@ -1,0 +1,2 @@
+Power: COM1,19200,8,1,NONE
+Relay: COM4,9600,8,1,NONE

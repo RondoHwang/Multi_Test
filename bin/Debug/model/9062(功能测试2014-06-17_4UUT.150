@@ -1,0 +1,557 @@
+###  CREATED: JIANFENG TANG  Model: 9062  
+###  COM5 =test fixture
+###  Modified at 2011-06-24
+
+###----------------voltage control------------------------------
+###  voltage adjustable (   CH09 OFF ) ; 19V ( CH09 ON  , CH10 ON ); 
+### 				 59V  ( CH09 ON , CH11 ON ) ; 69V ( CH09 ON  , CH12 ON ); 
+### 				 98V  ( CH09 ON , CH13 ON ) ; 115V ( CH09 ON  , CH14 ON ); 
+### 				162V  ( CH09 ON , CH15 ON ) ; 257V ( CH09 ON  , CH16 ON ); 
+### 				280V  ( CH09 ON , CH17 ON ) ; 445V ( CH09 ON  , CH18 ON ); 
+###         spare ( CH09 ON , CH19 ON ) ; spare ( CH09 ON  , CH20 ON ); 
+###         spare ( CH09 ON , CH21 ON ) ; spare ( CH09 ON  , CH22 ON ); 
+### 				
+###---------------Freqency control------------------------------
+### 	50HZ    ALL OFF ,  DEFAULT SETUP IS 50HZ  
+### 	60HZ    ( CH23 ON , CH24 ON ) 
+### 	400HZ    ( CH23 ON , CH25 ON ) 
+###----------------------------------------------------------------
+##################################################################
+###------------mother board relay control----------------------------
+###      Right rotary Field  (  CH01 ON  )
+###			 Left  rotary Field  (  CH02 ON  )
+###      	L3 missing   			(  CH03 ON  )
+###				L2 missing   			(  CH04 ON  )
+###				L1 missing   			(  CH05 ON  )
+###       current check    Line A --> L1 ,L2 ,  Line N --->L3  ( CH06 ON ) 
+###				current check    Line A --> L1 ,L3 ,  Line N --->L2  ( CH07 ON ) 
+###				current check    Line A --> L3 ,L2 ,  Line N --->L1  ( CH08 ON ) 
+###
+# ****************************Header Setting ****************************************************
+
+VERSION: 1.00
+DATE: 2011/06/24
+
+WAIT_TIME_AFTER_OUTPUT: 30                    # after each output wait 20ms 
+
+# -----------------------CONNECTION---------------------------------------
+
+STEP: 010                          
+INSTRUCTIONS: $CLEAR$
+BACKCOLOR: DEFAULT
+
+STEP: 020   # Connections 连接测试表
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --------9062 Function Test--------------------
+INSTRUCTIONS: ---- 将4个待测仪表接入测试工装  -----
+INSTRUCTIONS: --UUT（L1）--> 测试工装（L1）-----  
+INSTRUCTIONS: --UUT（L2）--> 测试工装（L2）----- 
+INSTRUCTIONS: --UUT（L3）--> 测试工装（L3）----- 
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: 请点“CONTINUE” 进行测试。
+INSTRUCTIONS: ----------------------------------------------
+BACKCOLOR: DEFAULT
+
+ACTION: CONTINUE
+
+
+
+# ************************ 9062  function test ******************************
+#--------------------------------------------------------------------------
+#
+#------   69V ， 50HZ    Right ----------------
+STEP: 100
+
+COM_PORT:5 
+		OUTPUT: $ALL OFF; 
+		OUTPUT: $CH29 ON;  #UUT1 relay on 
+		OUTPUT: $CH30 ON;  #UUT2 relay on 
+		OUTPUT: $CH31 ON;  #UUT3 relay on 
+		OUTPUT: $CH32 ON;  #UUT4 relay on 
+		
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH12 ON;  #69V output
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 69V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 亮 ， L -- 不亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: -- 检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+		WAIT: 100
+ACTION: PASS_FAIL
+
+
+#------   69V ， 400HZ   Right----------------
+STEP: 110
+
+COM_PORT:5 
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 69 V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS:  	LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 亮 ， L -- 不亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: -- 检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+		WAIT: 100
+ACTION: PASS_FAIL
+COM_PORT:5 
+		OUTPUT: $CH25 OFF;
+		WAIT: 500
+
+
+
+
+#------   280V ， 50HZ -  right ---------------
+STEP: 120
+
+COM_PORT:5 
+		OUTPUT: $ALL OFF;
+		OUTPUT: $CH29 ON;  #UUT1 relay on 
+		OUTPUT: $CH30 ON;  #UUT2 relay on 
+		OUTPUT: $CH31 ON;  #UUT3 relay on 
+		OUTPUT: $CH32 ON;  #UUT4 relay on 
+		OUTPUT: $CH01 ON;
+		WAIT: 50
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH17 ON;  #280V OUTPUT
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 50HZ  )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS:  LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 亮 ， L -- 不亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+		WAIT: 100
+ACTION: PASS_FAIL
+
+#------   280V ， 50HZ , left ----------------
+STEP: 130
+
+COM_PORT:5 
+		OUTPUT: $CH01 OFF; 
+		OUTPUT: $CH02 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS:   LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 不亮 ， L -- 亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+		WAIT: 100
+ACTION: PASS_FAIL
+
+
+
+
+
+#------   280V ， 400HZ , Right ----------------
+STEP: 140
+
+COM_PORT:5 
+		
+		OUTPUT: $CH02 OFF; 
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+			
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS:  LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 亮 ， L -- 不亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   280V ， 400HZ , Left ----------------
+STEP: 150
+
+COM_PORT:5 
+		
+		OUTPUT: $CH01 OFF; 
+		OUTPUT: $CH02 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS:   LED （ L1 --亮，L2-- 亮，L3 -- 亮， R -- 不亮 ， L -- 亮 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+	OUTPUT: $CH25 OFF;  #400HZ output OFF
+	WAIT:500
+
+
+
+
+
+#------   280 V ， 50HZ  phase missing  L3 missing ----------------
+STEP: 180
+
+COM_PORT:5 
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 100
+		OUTPUT: $ALL OFF; 
+		WAIT: 100          #WAIT 100MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		
+		OUTPUT: $CH29 ON;  #UUT1 relay on 
+		OUTPUT: $CH30 ON;  #UUT2 relay on 
+		OUTPUT: $CH31 ON;  #UUT3 relay on 
+		OUTPUT: $CH32 ON;  #UUT4 relay on 
+		OUTPUT: $CH03 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH17 ON;  #280V output ，50HZ
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 不亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 50HZ  phase missing  L2 missing ----------------
+STEP: 190
+
+COM_PORT:5 
+		OUTPUT: $CH03 OFF;
+		OUTPUT: $CH04 ON;
+		
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 不亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 50HZ  phase missing  L1 missing ----------------
+STEP: 200
+
+COM_PORT:5 
+		OUTPUT: $CH04 OFF;
+		OUTPUT: $CH05 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 不亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的指示灯显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 280V ) , UUT L3 connected to LINE N   ----------------
+STEP: 220
+
+COM_PORT:5 
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 100
+		OUTPUT: $ALL OFF; 
+		WAIT: 100          #WAIT 100MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;   #UUT1 relay on
+		OUTPUT: $CH06 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH17 ON;  #280V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF 
+		OUTPUT: $CH25 ON;  #400HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 280V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 230
+
+COM_PORT:5 
+		OUTPUT: $CH06 OFF; 
+		WAIT: 100
+		OUTPUT: $CH07 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 280V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 240
+
+COM_PORT:5 
+		OUTPUT: $CH07 OFF;
+		WAIT: 100
+		OUTPUT: $CH08 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的液晶显示是否正常 ，电流表读数 是否 < 3.5MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   UUT2 280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 280V ) , UUT L3 connected to LINE N   ----------------
+STEP: 250
+
+COM_PORT:5 
+		OUTPUT: $CH08 OFF; #UUT1 relay off
+		OUTPUT: $CH29 OFF; #UUT1 relay off
+	
+		OUTPUT: $CH30 ON;   #UUT2 relay on
+		OUTPUT: $CH06 ON;
+		
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 280V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 280
+
+COM_PORT:5 
+		OUTPUT: $CH06 OFF; 
+		WAIT: 100
+		OUTPUT: $CH07 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 280V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 290
+
+COM_PORT:5 
+		OUTPUT: $CH07 OFF;
+		WAIT: 100
+		OUTPUT: $CH08 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的液晶显示是否正常 ，电流表读数 是否 < 3.5MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   UUT 3 280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 280V ) , UUT L3 connected to LINE N   ----------------
+STEP: 300
+
+COM_PORT:5 
+		OUTPUT: $CH08 OFF; 
+		OUTPUT: $CH30 OFF; #UUT2 relay off
+		
+		OUTPUT: $CH31 ON;   #UUT3 relay on
+		OUTPUT: $CH06 ON;
+
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT3仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 280V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 310
+
+COM_PORT:5 
+		OUTPUT: $CH06 OFF; 
+		WAIT: 100
+		OUTPUT: $CH07 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 280V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 320
+
+COM_PORT:5 
+		OUTPUT: $CH07 OFF;
+		WAIT: 100
+		OUTPUT: $CH08 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的液晶显示是否正常 ，电流表读数 是否 < 3.5MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------  UUT4 280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 280V ) , UUT L3 connected to LINE N   ----------------
+STEP: 330
+
+COM_PORT:5 
+		OUTPUT: $CH08 OFF; 
+		OUTPUT: $CH31 OFF;   #UUT3 relay off
+		OUTPUT: $CH32 ON;   #UUT4 relay on
+		OUTPUT: $CH06 ON;
+
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 280V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 340
+
+COM_PORT:5 
+		OUTPUT: $CH06 OFF; 
+		WAIT: 100
+		OUTPUT: $CH07 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的指示灯显示是否正常 ，电流表读数 是否 < 3.5 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   280V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 280V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 350
+
+COM_PORT:5 
+		OUTPUT: $CH07 OFF;
+		WAIT: 100
+		OUTPUT: $CH08 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 280V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查仪表的液晶显示是否正常 ，电流表读数 是否 < 3.5MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+STEP: 360
+COM_PORT:5 
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 200
+		OUTPUT: $ALL OFF; 
+		WAIT: 200          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---Test complete------
+INSTRUCTIONS: ---请将仪表取出------
+
+
+
+
+
+
+
+

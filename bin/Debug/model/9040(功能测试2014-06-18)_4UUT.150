@@ -1,0 +1,741 @@
+###  CREATED: JIANFENG TANG  Model: 9040  
+###  COM1 =test fixture
+###  Modified at 2014-06-18
+###  Change the test sequence
+###  Version 2.00
+
+###----------------voltage control------------------------------
+###  voltage adjustable (   CH09 OFF ) ; 19V ( CH09 ON  , CH10 ON ); 
+### 				 59V  ( CH09 ON , CH11 ON ) ; 69V ( CH09 ON  , CH122 ON ); 
+### 				 98V  ( CH09 ON , CH13 ON ) ; 115V ( CH09 ON  , CH14 ON ); 
+### 				162V  ( CH09 ON , CH15 ON ) ; 257V ( CH09 ON  , CH16 ON ); 
+### 				280V  ( CH09 ON , CH17 ON ) ; 445V ( CH09 ON  , CH18 ON ); 
+###         spare ( CH09 ON , CH19 ON ) ; spare ( CH09 ON  , CH20 ON ); 
+###         spare ( CH09 ON , CH21 ON ) ; spare ( CH09 ON  , CH22 ON ); 
+### 				
+###---------------Freqency control------------------------------
+### 	50HZ    ALL OFF ,  DEFAULT SETUP IS 50HZ  
+### 	60HZ    ( CH23 ON , CH24 ON ) 
+### 	400HZ    ( CH23 ON , CH25 ON ) 
+###----------------------------------------------------------------
+##################################################################
+###------------mother board relay control----------------------------
+###      Right rotary Field  (  CH01 ON  )
+###			 Left  rotary Field  (  CH02 ON  )
+###      	L3 missing   			(  CH03 ON  )
+###				L2 missing   			(  CH04 ON  )
+###				L1 missing   			(  CH05 ON  )
+###       current check    Line A --> L1 ,L2 ,  Line N --->L3  ( CH06 ON ) 
+###				current check    Line A --> L1 ,L3 ,  Line N --->L2  ( CH07 ON ) 
+###				current check    Line A --> L3 ,L2 ,  Line N --->L1  ( CH08 ON ) 
+###
+# ****************************Header Setting ****************************************************
+
+###VERSION: 2.00
+###DATE: 2014/06/18
+
+###WAIT_TIME_AFTER_OUTPUT: 30                    # after each output wait 30ms 
+
+# -----------------------CONNECTION---------------------------------------
+
+STEP: 010                          
+INSTRUCTIONS: $CLEAR$
+BACKCOLOR: DEFAULT
+
+STEP: 020   # Connections 连接测试表
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --------9040 Function Test--------------------
+INSTRUCTIONS: ---- 将4个待测仪表接入测试工装  -----
+INSTRUCTIONS: --UUT（L1）--> 测试工装（L1）-----  
+INSTRUCTIONS: --UUT（L2）--> 测试工装（L2）----- 
+INSTRUCTIONS: --UUT（L3）--> 测试工装（L3）----- 
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: 请点“CONTINUE” 进行测试。
+INSTRUCTIONS: ----------------------------------------------
+BACKCOLOR: DEFAULT
+
+ACTION: CONTINUE
+
+
+
+# ************************ 9040  function test ******************************
+#--------------------------------------------------------------------------
+#
+#------   19V ， 50HZ    Right ----------------
+STEP: 100
+
+COM_PORT:5  
+		OUTPUT: $ALL OFF; 
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH10 ON;  #19V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH10 ON;  #19V output
+		OUTPUT: $CH23 OFF;  #50HZ output
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 19V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 --？，L2--？，L3 --？， R --显示 ， L --不显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   19V ， 50HZ   left----------------
+STEP: 110
+
+COM_PORT:5  
+		OUTPUT: $CH01 OFF; 
+		WAIT: 50
+		OUTPUT: $CH02 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 19V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 --？，L2--？，L3 --？， R --不显示 ， L -- 显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ----- 检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   19V ， 400HZ-  right ---------------
+STEP: 120
+
+COM_PORT:5  
+		OUTPUT: $CH02 OFF;
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 19V 400HZ  )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 --？，L2--？，L3 --？， R --显示 ， L -- 不显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   19V ， 400HZ , left ----------------
+STEP: 130
+
+COM_PORT:5  
+		OUTPUT: $CH01 OFF; 
+		OUTPUT: $CH02 ON;
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 19V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 --？，L2--？，L3 --？， R --不显示 ， L -- 显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+OUTPUT: $CH25 OFF;  #400HZ output OFF
+OUTPUT: $CH23 OFF;  #50HZ output ON
+WAIT: 100
+
+
+
+#------   445V ， 50HZ  right ----------------
+#--------high voltage , when do this test ,PLS swich the relay ,set the power supply low output at first
+#--------then switch the relay to test path ,and let the power supply output 445V ,this can protect the relay
+STEP: 140
+
+COM_PORT:5  
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 OFF;  #50HZ output ON
+		WAIT: 500          # wait the 445V output stable		
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 显示 ， L -- 不显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 50HZ  left  ----------------
+STEP: 150
+
+COM_PORT:5  
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH02 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 OFF;  #50HZ output ON
+		WAIT: 500          # wait the 445V output stable		
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 不显示 ， L -- 显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ  Right ----------------
+STEP: 160
+
+COM_PORT:5  
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH01 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output
+		WAIT: 500          # wait the 445V output stable		
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 显示 ， L -- 不显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+ACTION: PASS_FAIL
+
+
+
+#------   445V ， 400HZ  left rotary field ----------------
+STEP: 170
+
+COM_PORT:5  
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH02 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output
+		WAIT: 500          # wait the 445V output stable		
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LCD （ L1 -- ？，L2-- ？，L3 -- ？， R -- 不显示 ， L -- 显示 ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+
+#------   445V ， 50HZ  phase missing  L3 missing ----------------
+STEP: 180
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 300
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH03 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 OFF;  #50HZ output
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 显示，L2-- 显示，L3 -- 不显示， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 50HZ  phase missing  L2 missing ----------------
+STEP: 190
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH04 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 OFF;  #50HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 显示，L2-- 不显示，L3 -- 显示， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 50HZ  phase missing  L1 missing ----------------
+STEP: 200
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH05 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 OFF;  #50HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 50HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 不显示，L2-- 显示，L3 -- 显示， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查4个仪表的液晶显示是否正常？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 445V ) , UUT L3 connected to LINE N   ----------------
+STEP: 220
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH06 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF 
+		OUTPUT: $CH25 ON;  #400HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 445V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 230
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH07 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 445V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 240
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH29 ON;  #UUT1 on
+		OUTPUT: $CH08 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT1仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 445V ) , UUT L3 connected to LINE N   ----------------
+STEP: 250
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH06 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF 
+		OUTPUT: $CH25 ON;  #400HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT2仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 445V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 260
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH07 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT2仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 445V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 270
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH30 ON;  #UUT2 on
+		OUTPUT: $CH08 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT2仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 445V ) , UUT L3 connected to LINE N   ----------------
+STEP: 280
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH06 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF 
+		OUTPUT: $CH25 ON;  #400HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT3仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 445V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 290
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH07 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT3仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 445V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 300
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH31 ON;  #UUT3 on
+		OUTPUT: $CH08 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT3仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L2 connected to LINE A( 445V ) , UUT L3 connected to LINE N   ----------------
+STEP: 310
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH06 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF 
+		OUTPUT: $CH25 ON;  #400HZ output ON 
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT4仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L1 ,L3 connected to LINE A( 445V ) , UUT L2 connected to LINE N   ----------------
+
+STEP: 320
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH07 ON;
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT4仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+#------   445V ， 400HZ   current Test ----------------
+#------   UUT L3 ,L2 connected to LINE A( 445V ) , UUT L1 connected to LINE N   ----------------
+
+STEP: 330
+
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+		OUTPUT: $CH32 ON;  #UUT4 on
+		OUTPUT: $CH08 ON;
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH09 ON;  #volt adjust on
+		OUTPUT: $CH18 ON;  #445V output
+		OUTPUT: $CH23 ON;  #50HZ output OFF
+		OUTPUT: $CH25 ON;  #400HZ output ON
+				
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---相线对中线电压 （ 445V 400HZ )------
+INSTRUCTIONS:-----------------------------------------------
+INSTRUCTIONS: 	LED （ L1 -- 亮，L2-- 亮，L3 -- 亮， R -- ？ ， L -- ？ ）
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: --检查UUT4仪表的液晶显示是否正常 ，电流表读数 是否 < 1 MA ？------- 
+INSTRUCTIONS: ----------------------------------------------
+
+ACTION: PASS_FAIL
+
+
+
+
+
+
+
+
+
+
+
+
+STEP: 340
+COM_PORT:5  
+		OUTPUT: $CH09 OFF; #SET THE POWER SUPPLY TO LOW VOLTAGE
+		WAIT: 500
+		OUTPUT: $ALL OFF; 
+		WAIT: 500          #WAIT 500MS , LET THE POWER SUPPLY CHANGE THE VOLTAGE TO LOW AND 50HZ
+
+INSTRUCTIONS: $CLEAR$
+INSTRUCTIONS: ----------------------------------------------
+INSTRUCTIONS: ---Test complete------
+INSTRUCTIONS: ---请将仪表取出------
+
+
+
+
+
+
+
+

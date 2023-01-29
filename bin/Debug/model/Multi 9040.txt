@@ -1,0 +1,25 @@
+# TEST ITEM				#TEST DISCRIPTION						# AC SOURCE CODE                #RELAY CODE 							#Delay time
+Step100  #19V ， 50HZ, right			&LCD （ L1 --？，L2--？，L3 --？， R --显示 ， L --不显示 ）		&01 57 5E BE 00 F4 01 69	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH01 ON;		&500
+Step110  #19V ， 50HZ, left			&LCD （ L1 --？，L2--？，L3 --？， R --不显示 ， L -- 显示 ）		&01 57 5E BE 00 F4 01 69	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH02 ON;		&500
+Step120  #19V ， 400HZ, right			&LCD （ L1 --？，L2--？，L3 --？， R --显示 ， L -- 不显示 ）		&01 57 5E BE 00 A0 0F 23	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH01 ON;		&500
+Step130  #19V ， 400HZ, left			&LCD （ L1 --？，L2--？，L3 --？， R --不显示 ， L -- 显示 ）		&01 57 5E BE 00 A0 0F 23	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH02 ON;		&500
+Step140  #300V ， 50HZ, right			&LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 显示 ， L -- 不显示 ）	&01 57 5E B8 0B F4 01 6E	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH01 ON;		&500
+Step150  #300V ， 50HZ, left			&LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 不显示 ， L -- 显示 ）	&01 57 5E B8 0B F4 01 6E	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH02 ON;		&500
+Step160  #300V ， 400HZ,Right			&LCD （ L1 -- 显示，L2-- 显示，L3 -- 显示， R -- 显示 ， L -- 不显示 ）	&01 57 5E B8 0B A0 0F 28	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH01 ON;		&500
+Step170  #300V ， 400HZ,left 	                          	&LCD （ L1 -- ？，L2-- ？，L3 -- ？， R -- 不显示 ， L -- 显示 ）	&01 57 5E B8 0B A0 0F 28	&$CH29 ON;  $CH30 ON;   $CH31 ON;   $CH32 ON;  $CH02 ON;		&500
+Step200  #300V ， 50HZ,phase  L3 missing	&L3 missing						&01 57 5E B8 0B F4 01 6E	&$CH29 ON; $CH30 ON;    $CH31 ON;  $CH32 ON;  $CH03 ON;		&500
+Step210  #300V ， 50HZ,phase  L2 missing	&L2 missing						&01 57 5E B8 0B F4 01 6E	&$CH29 ON; $CH30 ON;    $CH31 ON;  $CH32 ON;  $CH04 ON;		&500
+Step220  #300V ， 50HZ,phase  L1 missing          	&L1 missing						&01 57 5E B8 0B F4 01 6E	&$CH29 ON; $CH30 ON;    $CH31 ON;  $CH32 ON;  $CH05 ON;		&500
+Step300  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH29 ON;  $CH06 ON;						&500 
+Step310  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH29 ON;  $CH07 ON;						&500
+Step320  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH29 ON;  $CH08 ON;						&500
+Step330  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH30 ON; $CH06 ON;						&500
+Step340  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH30 ON; $CH07 ON;						&500
+Step350  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH30 ON; $CH08 ON;						&500
+Step360  #300V ， 400HZ,current Test		&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH31 ON; $CH06 ON;						&500
+Step370  #300V ， 400HZ,current Test		&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH31 ON; $CH07 ON;						&500
+Step380  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH31 ON; $CH08 ON;						&500
+Step390  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH32 ON; $CH06 ON;						&500
+Step400  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH32 ON; $CH07 ON; 						&500
+Step410  #300V ， 400HZ,current Test	          	&check  current < 1mA					&01 57 5E B8 0B A0 0F 28	&$CH32 ON; $CH08 ON;						&500
+Step999  #compeleted			&test finished  						&01 57 11 00 00 00 00 69	&$ALL OFF;							&500
